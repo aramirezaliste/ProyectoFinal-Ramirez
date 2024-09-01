@@ -1,0 +1,8 @@
+.item-image {
+    opacity: 1;
+}
+
+.item-image:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
