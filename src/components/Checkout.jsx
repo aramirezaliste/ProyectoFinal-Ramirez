@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { CartContext } from "../context/CartContext"
 import { Box, Button, Flex, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import { CartDrawerTable } from "./CartDrawerTable"
+import { OrderForm } from "./OrderForm"
 
 export const Checkout = () => {
     const { cart, totalPrice } = useContext(CartContext)
@@ -45,7 +46,7 @@ export const Checkout = () => {
                         <Text fontSize='2xl'>Total</Text > 
                         <Text fontSize='2xl'>US ${totalPrice.toFixed(2)}</Text>
                     </Flex>
-                    <Button colorScheme="green" mt='4'>FINALIZAR COMPRA</Button>
+                    <OrderForm/>
                 </Flex>
             </Flex>
         </Box>

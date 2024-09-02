@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom"
 
 import { db } from "../services/firebaseConfig"
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import { productsAsync } from "../products";
+
 
 export const ItemListContainer = () => {
 	const [products, setProducts] = useState(null)
