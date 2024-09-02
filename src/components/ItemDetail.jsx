@@ -37,9 +37,10 @@ export const ItemDetail = () => {
         setDetail(productDetail)
         setIsLoading(false)
       })
-      ;
     }
   }, [id]);
+
+ 
 
   const increaseCount = () => {
     setCount(count + 1);

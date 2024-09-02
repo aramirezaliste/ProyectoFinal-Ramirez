@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom"
 //import { useFetch } from "../hooks/useFetch";
 
 import { db } from "../services/firebaseConfig"
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { productsAsync } from "../products";
 
 export const ItemListContainer = () => {
 	const [products, setProducts] = useState(null)
