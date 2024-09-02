@@ -1,25 +1,44 @@
-import { Box, Image, Text, Flex, Badge, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Flex,
+  Badge,
+  Button,
+  Spinner,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { ItemCount } from "./ItemCount";
+//import { useFetch } from "../hooks/useFetch"
+import { db } from "../services/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 export const ItemDetail = () => {
-  const [detail, setDetail] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
   const [count, setCount] = useState(1);
+  const [detail, setDetail] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  //const [url, setUrl] = useState(null)
+  //const { data: detail, isLoading } = useFetch(url)
 
   const { addToCart, isInCart } = useContext(CartContext);
-
   const { id } = useParams();
-  const { title, price, category, description, image } = detail;
 
   useEffect(() => {
-    setIsloading(true);
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => setDetail(data))
-      .finally(setIsloading(false));
+    setIsLoading(true);
+    if (id) {
+      const productRef = doc(db, "products", id);
+      getDoc(productRef)
+      .then( res => {
+        const data = res.data();
+        const snapId = res.id;
+        const productDetail = { id: snapId, ...data }
+        setDetail(productDetail)
+        setIsLoading(false)
+      })
+      ;
+    }
   }, [id]);
 
   const increaseCount = () => {
@@ -65,22 +84,22 @@ export const ItemDetail = () => {
             pt="10"
             boxSize="20em"
             objectFit="contain"
-            src={image}
-            alt={title}
+            src={detail.image}
+            alt={detail.title}
           />
-          <Text as="b">{title}</Text>
+          <Text as="b">{detail.title}</Text>
           <Badge mt="2" borderRadius="full" px="2" colorScheme="purple">
-            <Link to={`/categoria/${category}`}>{category}</Link>
+            <Link to={`/categoria/${detail.category}`}>{detail.category}</Link>
           </Badge>
         </Flex>
         <Box p="6">
           <Flex direction="column">
-            <Text as="cite">{description}</Text>
+            <Text as="cite">{detail.description}</Text>
             <Text fontSize="2xl" as="abbr" m="2">
-              US ${price}
+              US ${detail.price}
             </Text>
           </Flex>
-          {!isInCart(id) && (
+          {!isInCart(detail.id) && (
             <Flex align="center" justify="center">
               <ItemCount
                 decreaseCount={decreaseCount}

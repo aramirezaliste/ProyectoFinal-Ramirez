@@ -10,7 +10,7 @@ Tienda ficticia de articulos, pagina principal, articulos por categoria, carrito
     - React Router
     - CSS
 
-## Para iniciar la app
+## Instalar dependencias e iniciar la app 
     - $ npm i
     - $ npm run dev
 
