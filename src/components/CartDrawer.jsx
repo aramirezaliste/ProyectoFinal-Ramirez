@@ -40,7 +40,7 @@ export function CartDrawer({ isOpen, onClose, btnRef }) {
                                     </Thead>
                                     <Tbody>
                                         {
-                                            cart.sort((a, b) => a.id - b.id).map((product) => {
+                                            cart.sort((a, b) => a.price - b.price).map((product) => {
                                                 return (
                                                     <CartDrawerTable key={product.id} product={product} />
                                                 )
