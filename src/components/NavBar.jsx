@@ -1,17 +1,32 @@
-import { Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import { Button, Flex, Menu, MenuButton, MenuItem, MenuList, Spinner, Text } from "@chakra-ui/react";
 import { CartWidget } from "./CartWidget";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import '../styles/NavBar.css'
-import { useFetch } from "../hooks/useFetch";
+//import { useFetch } from "../hooks/useFetch";
+import { db } from "../services/firebaseConfig"
+import { collection, getDocs } from "firebase/firestore";
 
 export const NavBar = () => {
 	const [width, setWidth] = useState(window.innerWidth)
-	const url = 'https://fakestoreapi.com/products/categories'
+	const [categories, setCategories] = useState(null)
+	//const url = 'https://fakestoreapi.com/products/categories'
+	//const { data:categories } = useFetch(url)
 
-	const { data:categories } = useFetch(url)
-	
+	useEffect(() => {
+		const productTable = collection(db, "categories")
+		getDocs(productTable)
+			.then((snapshot) => {
+				const snapShotProducts = snapshot.docs.map((doc) => {
+					const data = doc.data()
+					const id = doc.id
+					return { id: id, ...data }
+				})
+				setCategories(snapShotProducts)
+			})
+	}, [])
+
 	const handleResize = () => {
 		setWidth(window.innerWidth)
 	}
@@ -28,7 +43,7 @@ export const NavBar = () => {
 						<MenuList >
 							{categories && categories.map((category) => {
 								return (
-									<MenuItem key={category}><Link className='nav-cat' to={`/categoria/${category}` } >{category}</Link></MenuItem>
+									<MenuItem key={category.id}><Link className='nav-cat' to={`/categoria/${category.name}`} >{category}</Link></MenuItem>
 								)
 							})}
 							<MenuItem><Link to={`/`}>All Articles</Link></MenuItem>
@@ -46,7 +61,7 @@ export const NavBar = () => {
 					<Text as='cite' color={"black"} fontSize='2xl'><Link to='/'>Brain Breaker</Link></Text>
 					{categories && categories.map((category) => {
 						return (
-							<Link className='nav-cat' to={`/categoria/${category}`} key={category}>{category}</Link>
+							<Link className='nav-cat' to={`/categoria/${category.name}`} key={category.id}>{category.name}</Link>
 						)
 					})}
 					<Link to={`/`}>All Articles</Link>

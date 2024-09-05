@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom"
 //import { useFetch } from "../hooks/useFetch";
 
 import { db } from "../services/firebaseConfig"
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 
 export const ItemListContainer = () => {

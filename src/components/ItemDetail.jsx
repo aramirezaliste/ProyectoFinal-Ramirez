@@ -30,17 +30,17 @@ export const ItemDetail = () => {
     if (id) {
       const productRef = doc(db, "products", id);
       getDoc(productRef)
-      .then( res => {
-        const data = res.data();
-        const snapId = res.id;
-        const productDetail = { id: snapId, ...data }
-        setDetail(productDetail)
-        setIsLoading(false)
-      })
+        .then(res => {
+          const data = res.data();
+          const snapId = res.id;
+          const productDetail = { id: snapId, ...data }
+          setDetail(productDetail)
+          setIsLoading(false)
+        })
     }
   }, [id]);
 
- 
+
 
   const increaseCount = () => {
     setCount(count + 1);
